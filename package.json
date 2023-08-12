@@ -10,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@headlessui/react": "^1.7.16",
     "@heroicons/react": "^2.0.18",
     "@livepeer/react": "^2.8.0",
     "@rainbow-me/rainbowkit": "^1.0.8",
