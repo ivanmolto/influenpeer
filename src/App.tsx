@@ -269,62 +269,353 @@ export default function Home() {
             <div className="mx-auto max-w-7xl px-6 pb-32 pt-36 sm:pt-60 lg:px-8 lg:pt-32">
               <div className="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
                 <div className="w-full max-w-xl lg:shrink-0 xl:max-w-2xl">
-                  <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-                    We’re changing the way people influence.
-                  </h1>
+                  {!address && (
+                    <h1 className="sm:-mt-28 lg:-mt-72 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900">
+                      We’re changing the way people influence.
+                    </h1>
+                  )}
+                  {address && (
+                    <h1 className="sm:mt-16 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900">
+                      We’re changing the way people influence.
+                    </h1>
+                  )}
                   <p className="relative mt-6 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">
                     Create a video NFT and engage with your audience. <br />
                     Minting as a new way of communication with your followers.
                   </p>
+                  {address ? (
+                    <div className="sm:max-w-md lg:max-w-lg">
+                      {asset?.status?.phase !== "ready" && (
+                        <div
+                          className="mt-8 border border-dashed border-blue-600 bg-gray-100 rounded p-5 mb-4 cursor-pointer "
+                          {...getRootProps()}
+                        >
+                          <input {...getInputProps()} />
+                          <div className="flex-row">
+                            {video ? (
+                              <div className="flex justify-center h-48 items-center">
+                                <p className="text-base text-green-600 ">
+                                  File Selected{" "}
+                                </p>
+                                <BsCheck2Circle className="text-green-600 text-xl mt-1 ml-4" />
+                              </div>
+                            ) : (
+                              <div className="text-center text-gray-900">
+                                <div className="">
+                                  <div className="mt-2 flex justify-center rounded-lg bg-gray-100 border-gray-900/25 px-6 py-10">
+                                    <div className="text-center">
+                                      <FilmIcon
+                                        className="mx-auto h-12 w-12 text-gray-300"
+                                        aria-hidden="true"
+                                      />
+                                      <div className="mt-4 flex text-sm leading-6 text-gray-600">
+                                        <label
+                                          htmlFor="file-upload"
+                                          className="relative cursor-pointer rounded-md font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
+                                        >
+                                          <span>Upload</span>
+                                          <input
+                                            id="file-upload"
+                                            name="file-upload"
+                                            type="file"
+                                            className="sr-only"
+                                          />
+                                        </label>
+                                        <div className="pl-1">
+                                          or drag and drop
+                                        </div>
+                                      </div>
+                                      <div className="text-sm leading-5 text-gray-600">
+                                        a video file up to 10GB
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                      {/* Displays the player with NFT information */}
+                      {asset?.storage?.ipfs?.cid ? (
+                        <div>
+                          <div className="flex flex-col justify-center items-center ml-5">
+                            <p className="mt-4 text-sm text-gray-900">
+                              Your video is now ready to be minted! Complete
+                              minting process in your wallet.
+                            </p>
+                            <div className="border border-solid border-indigo-600 rounded-md p-6 mb-4 mt-5 lg:w-3/4 w-100">
+                              <Player playbackId={asset?.storage?.ipfs?.cid} />
+                            </div>
+                            <div className="items-center w-3/4">
+                              {contractWriteData?.hash && isSuccess ? (
+                                <div className="flex"></div>
+                              ) : contractWriteError ? (
+                                <div>
+                                  <button
+                                    className="border border-transparent hover:text-indigo-600 rounded-lg px-5 py-3 bg-slate-800 mr-5 hover:border-blue-600"
+                                    onClick={() =>
+                                      setShowErrorMessage(!showErrorMessage)
+                                    }
+                                  >
+                                    {showErrorMessage ? (
+                                      <span>Hide Error</span>
+                                    ) : (
+                                      <span>Show Error</span>
+                                    )}
+                                  </button>
+                                  <a href={`/`} rel="noreferrer">
+                                    <button className="border border-transparent hover:text-blue-600 rounded-lg px-5 py-3 bg-slate-800 mr-5 hover:border-indigo-600">
+                                      Return to Form
+                                    </button>
+                                  </a>
+                                  {showErrorMessage && (
+                                    <div className="border border-solid border-blue-600 rounded-md p-6 mb-4 mt-5 overflow-x-auto">
+                                      <p className="text-center text-red-600">
+                                        {contractWriteError.message}
+                                      </p>
+                                    </div>
+                                  )}
+                                </div>
+                              ) : (
+                                <></>
+                              )}
+                            </div>
+                            {/* Card with NFT Information */}
+                            <div className="border border-solid border-blue-600 rounded-md p-6 mb-4 mt-5 lg:w-3/4 w-96">
+                              <div className="grid grid-row-2">
+                                <h1 className="text-5xl place-self-start">
+                                  {assetName}
+                                </h1>
+                                <a
+                                  href={twitterLink}
+                                  className="place-self-end"
+                                  target="_blank"
+                                  rel="noreferrer"
+                                >
+                                  <button className="bg-sky-500 hover:bg-slate-200 rounded-md pr-4 p-2 mb-1 hover:text-indigo-500">
+                                    <span className="flex">
+                                      <BsTwitter className="text-xl mt-0.5 " />
+                                      <p className="text-xl  ml-1">Share</p>
+                                    </span>{" "}
+                                  </button>
+                                </a>
+                              </div>
+                              <div className="border-b-2 border-zinc-600"></div>
+                              <div className="mt-2">
+                                <p className="text-start text-xl">
+                                  {description}
+                                </p>
+                              </div>
+                              <p className="text-center text-white hover:text-blue-600 mt-10 break-words">
+                                <div className="border-b-2 border-zinc-600 mb-4"></div>
+                                Gateway URL:
+                                <br />
+                                <a href={asset?.storage?.ipfs?.gatewayUrl}>
+                                  {asset?.storage?.ipfs?.gatewayUrl}
+                                </a>
+                              </p>
+                              {isSuccess && (
+                                <a
+                                  target="_blank"
+                                  href={`https://explorer.testnet.mantle.xyz/tx/${contractWriteData?.hash}`}
+                                  rel="noreferrer"
+                                >
+                                  <button className=" mt-6 rounded px-5 py-2 hover:bg-slate-800 mr-5 bg-zinc-700">
+                                    View Transaction
+                                  </button>
+                                </a>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <>
+                          <div className="text-center my-5 text-blue-600">
+                            {video && (
+                              <p className="text-sm text-gray-900 whitespace-pre-line">
+                                {uploading}
+                                {processing}
+                                {uploadIPFS}
+                              </p>
+                            )}
+                          </div>
+                          {/* Form for NFT creation */}
+                          <div className="flex flex-col ">
+                            <label htmlFor="asset-name" className="text-left">
+                              <span className="text-sm text-gray-900">
+                                Name:
+                              </span>{" "}
+                              <span className="text-red-600">*</span>
+                            </label>
+                            <input
+                              className="rounded bg-gray-100 p-1 text-sm text-gray-900"
+                              type="text"
+                              value={assetName}
+                              name="asset-name"
+                              required
+                              placeholder="Type the name of your NFT here"
+                              disabled={disabled}
+                              onChange={(e) => setAssetName(e.target.value)}
+                            />
+                            <br />
+                            <label htmlFor="description" className="text-left">
+                              <span className="text-sm text-gray-900">
+                                Description:
+                              </span>{" "}
+                              <span className="text-red-600">*</span>
+                            </label>
+                            <textarea
+                              className="rounded bg-gray-100 mb-5 p-1 text-sm text-gray-900"
+                              value={description}
+                              name="description"
+                              required
+                              placeholder="Type a description of your NFT here"
+                              disabled={disabled}
+                              onChange={(e) => setDescription(e.target.value)}
+                            />
+                            {/* Upload Asset */}
+                            <div className="flex justify-start">
+                              {asset?.status?.phase !== "ready" ||
+                              asset?.storage?.status?.phase !== "ready" ? (
+                                <div>
+                                  {!description ? (
+                                    <button className="rounded-md p-3 bg-slate-800 px-3.5 py-2.5 text-sm font-semibold opacity-50 cursor-not-allowed">
+                                      Create NFT
+                                    </button>
+                                  ) : (
+                                    <button
+                                      className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                      onClick={() => {
+                                        if (video) {
+                                          setDisabled(true),
+                                            setButtonClicked(true),
+                                            createAsset?.();
+                                        }
+                                      }}
+                                    >
+                                      Create NFT
+                                      <br />
+                                      {isLoading && <BarLoader color="#fff" />}
+                                    </button>
+                                  )}
+                                  <p className="mt-4 text-sm text-gray-900">
+                                    When your wallet interface appears, your
+                                    video is ready to be minted!
+                                  </p>
+                                </div>
+                              ) : (
+                                <></>
+                              )}
+                            </div>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  ) : (
+                    <p></p>
+                  )}
                 </div>
-                <div className="mt-14 flex justify-end gap-8 md:-mt-28 md:justify-start sm:pl-20 lg:mt-0 lg:pl-0">
-                  <div className="ml-auto w-44 flex-none space-y-8 pt-32 sm:ml-0 sm:pt-80 lg:order-last lg:pt-36 xl:order-none xl:pt-80">
-                    <div className="relative">
-                      <img
-                        src={soundtrap}
-                        alt=""
-                        className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
-                      />
-                      <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10" />
+                {!address && (
+                  <div className="mt-14 flex justify-end gap-8 md:-mt-28 md:justify-start sm:pl-20 lg:mt-0 lg:pl-0">
+                    <div className="ml-auto w-44 flex-none space-y-8 pt-32 sm:ml-0 sm:pt-80 lg:order-last lg:pt-36 xl:order-none xl:pt-80">
+                      <div className="relative">
+                        <img
+                          src={soundtrap}
+                          alt=""
+                          className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
+                        />
+                        <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10" />
+                      </div>
+                    </div>
+                    <div className="mr-auto w-44 flex-none space-y-8 sm:mr-0 sm:pt-52 lg:pt-36">
+                      <div className="relative">
+                        <img
+                          src={fashion}
+                          alt=""
+                          className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
+                        />
+                        <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10" />
+                      </div>
+                      <div className="relative">
+                        <img
+                          src={dancing}
+                          alt=""
+                          className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
+                        />
+                        <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10" />
+                      </div>
+                    </div>
+                    <div className="w-44 flex-none space-y-8 pt-32 sm:pt-0">
+                      <div className="relative">
+                        <img
+                          src={styling}
+                          alt=""
+                          className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
+                        />
+                        <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10" />
+                      </div>
+                      <div className="relative">
+                        <img
+                          src={clothing}
+                          alt=""
+                          className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
+                        />
+                        <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10" />
+                      </div>
                     </div>
                   </div>
-                  <div className="mr-auto w-44 flex-none space-y-8 sm:mr-0 sm:pt-52 lg:pt-36">
-                    <div className="relative">
-                      <img
-                        src={fashion}
-                        alt=""
-                        className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
-                      />
-                      <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10" />
+                )}
+                {address && (
+                  <div className="mt-14 flex justify-end gap-8 md:-mt-28 md:justify-start sm:pl-20 lg:-mt-24 lg:pl-0">
+                    <div className="ml-auto w-44 flex-none space-y-8 pt-32 sm:ml-0 sm:pt-80 lg:order-last lg:pt-36 xl:order-none xl:pt-80">
+                      <div className="relative">
+                        <img
+                          src={soundtrap}
+                          alt=""
+                          className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
+                        />
+                        <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10" />
+                      </div>
                     </div>
-                    <div className="relative">
-                      <img
-                        src={dancing}
-                        alt=""
-                        className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
-                      />
-                      <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10" />
+                    <div className="mr-auto w-44 flex-none space-y-8 sm:mr-0 sm:pt-52 lg:pt-36">
+                      <div className="relative">
+                        <img
+                          src={fashion}
+                          alt=""
+                          className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
+                        />
+                        <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10" />
+                      </div>
+                      <div className="relative">
+                        <img
+                          src={dancing}
+                          alt=""
+                          className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
+                        />
+                        <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10" />
+                      </div>
+                    </div>
+                    <div className="w-44 flex-none space-y-8 pt-32 sm:pt-0">
+                      <div className="relative">
+                        <img
+                          src={styling}
+                          alt=""
+                          className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
+                        />
+                        <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10" />
+                      </div>
+                      <div className="relative">
+                        <img
+                          src={clothing}
+                          alt=""
+                          className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
+                        />
+                        <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10" />
+                      </div>
                     </div>
                   </div>
-                  <div className="w-44 flex-none space-y-8 pt-32 sm:pt-0">
-                    <div className="relative">
-                      <img
-                        src={styling}
-                        alt=""
-                        className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
-                      />
-                      <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10" />
-                    </div>
-                    <div className="relative">
-                      <img
-                        src={clothing}
-                        alt=""
-                        className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
-                      />
-                      <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10" />
-                    </div>
-                  </div>
-                </div>
+                )}
               </div>
             </div>
           </div>
