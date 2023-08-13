@@ -474,7 +474,7 @@ export default function Home() {
                             {/* Card with NFT Information */}
                             <div className="border border-solid border-indigo-600 rounded-md p-6 mb-4 mt-5 lg:w-3/4 w-96">
                               <div className="grid grid-row-2">
-                                <h1 className="text-4xl place-self-start">
+                                <h1 className="text-3xl place-self-start truncate">
                                   {assetName}
                                 </h1>
                                 <a
