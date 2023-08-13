@@ -27,8 +27,6 @@ import dancing from "./assets/dancing.png";
 import influenpeer from "./assets/influenpeer.svg";
 
 export default function Home() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
   const [video, setVideo] = useState<File | null>(null);
   const [assetName, setAssetName] = useState<string>("");
   const [disabled, setDisabled] = useState<boolean>(false);
