@@ -369,6 +369,7 @@ export default function Home() {
                     No more limits with files up to 10GB and optimal video
                     playback on all bandwidths and device types.
                     <br />
+                    <br />
                     Leveraging Zora Protocol Rewards.
                   </p>
                   {address ? (
