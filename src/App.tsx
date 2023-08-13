@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useMemo, useCallback, useState, useEffect } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
@@ -37,6 +38,7 @@ export default function Home() {
   const [isUploadingToIPFS, setIsUploadingToIPFS] = useState<boolean>(false);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [showErrorMessage, setShowErrorMessage] = useState<boolean>(false);
+
   const [buttonClicked, setButtonClicked] = useState<boolean>(false);
 
   const { address } = useAccount();
