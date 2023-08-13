@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { useMemo, useCallback, useState, useEffect } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { zoraNftCreatorV1Config } from "@zoralabs/zora-721-contracts";
 
 import {
   useAsset,
@@ -13,13 +15,16 @@ import {
 import { useDropzone } from "react-dropzone";
 import BarLoader from "react-spinners/BarLoader";
 
-import { useAccount, useContractWrite, usePrepareContractWrite } from "wagmi";
+import {
+  useAccount,
+  useChainId,
+  useContractWrite,
+  usePrepareContractWrite,
+} from "wagmi";
 
 import { BsCheck2Circle } from "react-icons/bs";
 import { BsTwitter } from "react-icons/bs";
 import { FilmIcon } from "@heroicons/react/24/solid";
-
-import { videoNftAbi } from "./components/videoNftAbi";
 
 import soundtrap from "./assets/soundtrap.png";
 import fashion from "./assets/fashion.png";
@@ -28,11 +33,33 @@ import clothing from "./assets/clothing.png";
 import dancing from "./assets/dancing.png";
 import influenpeer from "./assets/influenpeer.svg";
 
+const social = [
+  {
+    name: "Twitter",
+    href: "https://twitter.com/ivanmolto",
+    icon: (props: any) => (
+      <svg fill="currentColor" viewBox="0 0 512 512" {...props}>
+        <path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z" />
+      </svg>
+    ),
+  },
+  {
+    name: "GitHub",
+    href: "https://github.com/ivanmolto/influenpeer",
+    icon: (props: any) => (
+      <svg fill="currentColor" viewBox="0 0 496 512" {...props}>
+        <path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z" />
+      </svg>
+    ),
+  },
+];
+
 export default function Home() {
   const [video, setVideo] = useState<File | null>(null);
   const [assetName, setAssetName] = useState<string>("");
+  const [symbolName, setSymbolName] = useState<string>("");
   const [disabled, setDisabled] = useState<boolean>(false);
-  const [description, setDescription] = useState<string>();
+  const [nftDescription, setNftDescription] = useState<string>("");
   const [isWriteInProgress, setIsWriteInProgress] = useState<boolean>();
   const [isUpdateAsset, setIsUpdateAsset] = useState<boolean>();
   const [isFileSelected, setIsFileSelected] = useState<boolean>(false);
@@ -43,7 +70,9 @@ export default function Home() {
 
   const { address } = useAccount();
 
-  console.log(isFileSelected, isUploadingToIPFS, isProcessing, buttonClicked);
+  if (isFileSelected && isUploadingToIPFS && isProcessing && buttonClicked) {
+    // Do nothing - workaround to upload to Vercel
+  }
 
   // Creating an asset
   const {
@@ -91,7 +120,7 @@ export default function Home() {
           storage: {
             ipfs: true,
             metadata: {
-              description,
+              nftDescription,
               image: null as any, // clear the default thumbnail
             },
           },
@@ -147,20 +176,58 @@ export default function Home() {
     [progress],
   );
 
+  const chainId = useChainId();
+
   // Providing the mint contract information
 
-  const { config } = usePrepareContractWrite({
-    // Address of the Influenpeer NFT contract on the OP Superchain (OP Mainnet, Base, and Zora by now)
-    address: "0x9FBC9D6cebca4748A9709C75c57d6600f60862D1",
-    abi: videoNftAbi,
+  const contractName = assetName;
+  const symbol = symbolName;
+  const editionSize = 9999n;
+  const royaltyBps = 0;
+  const fundsRecipient = address!;
+  const defaultAdmin = address!;
+  const description = nftDescription;
+  const animationUri = "0x0";
+  const imageUri = asset?.storage?.ipfs?.cid as string;
+  const maxSalePurchasePerAddress = 4294967295;
+  const createReferral = address!;
+
+  const {
+    config,
+    error: prepareError,
+    isError: isPrepareError,
+  } = usePrepareContractWrite({
+    // Address of the Zora Creator Proxy contract on the OP Superchain (OP Mainnet, Base, and Zora by now)
+
+    // @ts-ignore
+    address: zoraNftCreatorV1Config.address[chainId],
+    abi: zoraNftCreatorV1Config.abi,
     // Function on the contract
-    functionName: "mint",
-    // Arguments for the mint function
-    args:
-      address && asset?.storage?.ipfs?.nftMetadata?.url
-        ? [address, asset?.storage?.ipfs?.nftMetadata?.url]
-        : undefined,
-    enabled: Boolean(address && asset?.storage?.ipfs?.nftMetadata?.url),
+    functionName: "createEditionWithReferral",
+
+    args: [
+      contractName,
+      symbol,
+      editionSize,
+      royaltyBps,
+      fundsRecipient,
+      defaultAdmin,
+      {
+        maxSalePurchasePerAddress,
+        presaleEnd: 0n,
+        presaleStart: 0n,
+        presaleMerkleRoot:
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+        // max value for end date, results in no end date for mint
+        publicSaleEnd: 18446744073709551615n,
+        publicSalePrice: 0n,
+        publicSaleStart: 0n,
+      },
+      description,
+      animationUri,
+      imageUri,
+      createReferral,
+    ],
   });
 
   // Writing to the mint contract
@@ -210,7 +277,7 @@ export default function Home() {
   const twitterLink = `https://twitter.com/intent/tweet?text=Check%20out%20my%20Video%20NFT%20📽️%0D${assetName}%20minted%20on%20%23Influenpeer.%0D%0D🛠️%20Built%20on%20%40Superchain%0D%20🌐%20Powered%20by%20%40Zora%0D%0DCreate%20your%20%23Influenpeer%20here%20👇%20https://www.influenpeer.com`;
 
   return (
-    <div className="bg-white">
+    <div className="bg-white font-montserrat">
       <header className="absolute inset-x-0 top-0 z-50">
         <nav
           className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
@@ -219,7 +286,11 @@ export default function Home() {
           <div className="flex lg:flex-1">
             <a href="#" className="-m-1.5 p-1.5 flex flex-row">
               <span className="sr-only">Influenpeer</span>
-              <img className="h-10 w-auto" src={influenpeer} alt="" />
+              <img
+                className="h-10 w-auto"
+                src={influenpeer}
+                alt="Influenpeer"
+              />
               <span className="text-indigo-600 ml-1 mt-2 text-2xl hidden h-10 w-auto sm:block">
                 influenpeer
               </span>
@@ -350,21 +421,22 @@ export default function Home() {
                       {/* Displays the player with NFT information */}
                       {asset?.storage?.ipfs?.cid ? (
                         <div>
-                          <div className="flex flex-col justify-center items-center ml-5">
-                            <p className="mt-4 text-sm text-gray-900">
-                              Your video is now ready to be minted! Complete
-                              minting process in your wallet.
+                          <div className="flex flex-col justify-center items-center">
+                            <p className="mt-4 text-sm text-gray-900 font-semibold">
+                              Your video Zora ERC721 Edition with rewards is now
+                              ready to be created! <br />
+                              Complete creation process in your wallet.
                             </p>
                             <div className="border border-solid border-indigo-600 rounded-md p-6 mb-4 mt-5 lg:w-3/4 w-100">
                               <Player playbackId={asset?.storage?.ipfs?.cid} />
                             </div>
-                            <div className="items-center w-3/4">
+                            <div className="ml-6">
                               {contractWriteData?.hash && isSuccess ? (
                                 <div className="flex"></div>
                               ) : contractWriteError ? (
                                 <div>
                                   <button
-                                    className="border border-transparent hover:text-indigo-600 rounded-lg px-5 py-3 bg-slate-800 mr-5 hover:border-blue-600"
+                                    className="text-white border border-transparent hover:bg-indigo-800 rounded-lg px-5 py-3 bg-indigo-600 mr-5"
                                     onClick={() =>
                                       setShowErrorMessage(!showErrorMessage)
                                     }
@@ -376,12 +448,12 @@ export default function Home() {
                                     )}
                                   </button>
                                   <a href={`/`} rel="noreferrer">
-                                    <button className="border border-transparent hover:text-blue-600 rounded-lg px-5 py-3 bg-slate-800 mr-5 hover:border-indigo-600">
+                                    <button className="text-white border border-transparent hover:bg-indigo-800 rounded-lg px-5 py-3 bg-indigo-600 mr-5">
                                       Return to Form
                                     </button>
                                   </a>
                                   {showErrorMessage && (
-                                    <div className="border border-solid border-blue-600 rounded-md p-6 mb-4 mt-5 overflow-x-auto">
+                                    <div className="border border-solid border-indigo-600 rounded-md p-6 mb-4 mt-5 overflow-x-auto">
                                       <p className="text-center text-red-600">
                                         {contractWriteError.message}
                                       </p>
@@ -393,7 +465,7 @@ export default function Home() {
                               )}
                             </div>
                             {/* Card with NFT Information */}
-                            <div className="border border-solid border-blue-600 rounded-md p-6 mb-4 mt-5 lg:w-3/4 w-96">
+                            <div className="border border-solid border-indigo-600 rounded-md p-6 mb-4 mt-5 lg:w-3/4 w-96">
                               <div className="grid grid-row-2">
                                 <h1 className="text-5xl place-self-start">
                                   {assetName}
@@ -404,35 +476,89 @@ export default function Home() {
                                   target="_blank"
                                   rel="noreferrer"
                                 >
-                                  <button className="bg-sky-500 hover:bg-slate-200 rounded-md pr-4 p-2 mb-1 hover:text-indigo-500">
+                                  <button className="text-white bg-indigo-600 hover:bg-indigo-800 rounded-md pr-4 p-2 mb-1">
                                     <span className="flex">
-                                      <BsTwitter className="text-xl mt-0.5 " />
                                       <p className="text-xl  ml-1">Share</p>
                                     </span>{" "}
                                   </button>
                                 </a>
                               </div>
-                              <div className="border-b-2 border-zinc-600"></div>
+                              <div className="border-b-2 border-indigo-600"></div>
                               <div className="mt-2">
                                 <p className="text-start text-xl">
                                   {description}
                                 </p>
                               </div>
-                              <p className="text-center text-white hover:text-blue-600 mt-10 break-words">
-                                <div className="border-b-2 border-zinc-600 mb-4"></div>
+                              <p className="text-center text-gray-900 hover:text-indigo-600 mt-10 break-words">
+                                <div className="border-b-2 border-indigo-600 mb-4"></div>
                                 Gateway URL:
                                 <br />
                                 <a href={asset?.storage?.ipfs?.gatewayUrl}>
                                   {asset?.storage?.ipfs?.gatewayUrl}
                                 </a>
                               </p>
-                              {isSuccess && (
+                              {isSuccess && chainId === 8453 && (
                                 <a
                                   target="_blank"
-                                  href={`https://explorer.testnet.mantle.xyz/tx/${contractWriteData?.hash}`}
+                                  href={`https://basescan.org/tx/${contractWriteData?.hash}`}
                                   rel="noreferrer"
                                 >
-                                  <button className=" mt-6 rounded px-5 py-2 hover:bg-slate-800 mr-5 bg-zinc-700">
+                                  <button className="text-white mt-6 rounded px-5 py-2 hover:bg-indigo-800 mr-5 bg-indigo-600">
+                                    View Transaction
+                                  </button>
+                                </a>
+                              )}
+                              {isSuccess && chainId === 84531 && (
+                                <a
+                                  target="_blank"
+                                  href={`https://goerli.basescan.org/tx/${contractWriteData?.hash}`}
+                                  rel="noreferrer"
+                                >
+                                  <button className="text-white mt-6 rounded px-5 py-2 hover:bg-indigo-800 mr-5 bg-indigo-600">
+                                    View Transaction
+                                  </button>
+                                </a>
+                              )}
+                              {isSuccess && chainId === 10 && (
+                                <a
+                                  target="_blank"
+                                  href={`https://optimistic.etherscan.io/tx/${contractWriteData?.hash}`}
+                                  rel="noreferrer"
+                                >
+                                  <button className="text-white mt-6 rounded px-5 py-2 hover:bg-indigo-800 mr-5 bg-indigo-600">
+                                    View Transaction
+                                  </button>
+                                </a>
+                              )}
+                              {isSuccess && chainId === 420 && (
+                                <a
+                                  target="_blank"
+                                  href={`https://goerli-optimism.etherscan.io/tx/${contractWriteData?.hash}`}
+                                  rel="noreferrer"
+                                >
+                                  <button className="text-white mt-6 rounded px-5 py-2 hover:bg-indigo-800 mr-5 bg-indigo-600">
+                                    View Transaction
+                                  </button>
+                                </a>
+                              )}
+                              {isSuccess && chainId === 7777777 && (
+                                <a
+                                  target="_blank"
+                                  href={`https://explorer.zora.energy/tx/${contractWriteData?.hash}`}
+                                  rel="noreferrer"
+                                >
+                                  <button className="text-white mt-6 rounded px-5 py-2 hover:bg-indigo-800 mr-5 bg-indigo-600">
+                                    View Transaction
+                                  </button>
+                                </a>
+                              )}
+                              {isSuccess && chainId === 999 && (
+                                <a
+                                  target="_blank"
+                                  href={`https://testnet.explorer.zora.energy/tx/${contractWriteData?.hash}`}
+                                  rel="noreferrer"
+                                >
+                                  <button className="text-white mt-6 rounded px-5 py-2 hover:bg-indigo-800 mr-5 bg-indigo-600">
                                     View Transaction
                                   </button>
                                 </a>
@@ -465,9 +591,26 @@ export default function Home() {
                               value={assetName}
                               name="asset-name"
                               required
-                              placeholder="Type the name of your NFT here"
+                              placeholder="Type the name of your NFT collection here"
                               disabled={disabled}
                               onChange={(e) => setAssetName(e.target.value)}
+                            />
+                            <br />
+                            <label htmlFor="asset-name" className="text-left">
+                              <span className="text-sm text-gray-900">
+                                Symbol:
+                              </span>{" "}
+                              <span className="text-red-600">*</span>
+                            </label>
+                            <input
+                              className="rounded bg-gray-100 p-1 text-sm text-gray-900"
+                              type="text"
+                              value={symbolName}
+                              name="symbol-name"
+                              required
+                              placeholder="Type the symbol of your NFT collection here"
+                              disabled={disabled}
+                              onChange={(e) => setSymbolName(e.target.value)}
                             />
                             <br />
                             <label htmlFor="description" className="text-left">
@@ -483,7 +626,9 @@ export default function Home() {
                               required
                               placeholder="Type a description of your NFT here"
                               disabled={disabled}
-                              onChange={(e) => setDescription(e.target.value)}
+                              onChange={(e) =>
+                                setNftDescription(e.target.value)
+                              }
                             />
                             {/* Upload Asset */}
                             <div className="flex justify-start">
@@ -492,7 +637,7 @@ export default function Home() {
                                 <div>
                                   {!description ? (
                                     <button className="rounded-md p-3 bg-slate-800 px-3.5 py-2.5 text-sm font-semibold opacity-50 cursor-not-allowed">
-                                      Create NFT
+                                      Create Video NFT Edition
                                     </button>
                                   ) : (
                                     <button
@@ -505,14 +650,14 @@ export default function Home() {
                                         }
                                       }}
                                     >
-                                      Create NFT
+                                      Create Video NFT Edition
                                       <br />
                                       {isLoading && <BarLoader color="#fff" />}
                                     </button>
                                   )}
                                   <p className="mt-4 text-sm text-gray-900">
                                     When your wallet interface appears, your
-                                    video is ready to be minted!
+                                    video NFT edition is ready to be minted!
                                   </p>
                                 </div>
                               ) : (
@@ -524,7 +669,7 @@ export default function Home() {
                       )}
                     </div>
                   ) : (
-                    <p></p>
+                    <div></div>
                   )}
                 </div>
                 {!address && (
@@ -631,6 +776,62 @@ export default function Home() {
             </div>
           </div>
         </div>
+        <footer className="bg-white">
+          <div className="mx-auto max-w-7xl overflow-hidden px-6 py-20 sm:py-24 lg:px-8">
+            <div className="mt-2 flex justify-center space-x-10">
+              {social.map((item) => (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  rel="noreferrer"
+                  target="_blank"
+                  className="text-gray-400 hover:text-gray-500"
+                >
+                  <span className="sr-only">{item.name}</span>
+                  <item.icon className="h-6 w-6" aria-hidden="true" />
+                </a>
+              ))}
+            </div>
+            <p className="mt-10 text-center text-sm leading-5 text-gray-500 ">
+              Built on{" "}
+              <a
+                href="https://base.org"
+                rel="noreferrer"
+                target="_blank"
+                className="underline hover:text-blue-600"
+              >
+                Base
+              </a>
+              ,{" "}
+              <a
+                href="https://www.optimism.io"
+                rel="noreferrer"
+                target="_blank"
+                className="underline hover:text-rose-600"
+              >
+                Optimism
+              </a>{" "}
+              and{" "}
+              <a
+                href="https://zora.energy"
+                rel="noreferrer"
+                target="_blank"
+                className="underline hover:text-sky-600"
+              >
+                Zora
+              </a>{" "}
+              for the{" "}
+              <a
+                href="https://ethglobal.com/events/superhack"
+                rel="noreferrer"
+                target="_blank"
+                className="underline hover:text-gray-900"
+              >
+                Superhack at ETHGlobal
+              </a>
+            </p>
+          </div>
+        </footer>
       </main>
     </div>
   );
