@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMemo, useCallback, useState, useEffect } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
@@ -38,10 +39,11 @@ export default function Home() {
   const [isUploadingToIPFS, setIsUploadingToIPFS] = useState<boolean>(false);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [showErrorMessage, setShowErrorMessage] = useState<boolean>(false);
-
   const [buttonClicked, setButtonClicked] = useState<boolean>(false);
 
   const { address } = useAccount();
+
+  console.log(isFileSelected, isUploadingToIPFS, isProcessing, buttonClicked);
 
   // Creating an asset
   const {
@@ -110,6 +112,15 @@ export default function Home() {
         ? `Video Processing: ${Math.round(progress?.[0].progress * 100)}%`
         : null,
     [progress],
+  );
+
+  console.log(
+    isFileSelected,
+    isUploadingToIPFS,
+    isProcessing,
+    buttonClicked,
+    error,
+    progressFormatted,
   );
 
   const uploading = useMemo(
