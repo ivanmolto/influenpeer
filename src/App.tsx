@@ -267,7 +267,8 @@ export default function Home() {
     buttonClicked &&
     progressFormatted &&
     prepareError &&
-    isPrepareError
+    isPrepareError &&
+    error
   ) {
     // Do nothing - workaround to upload to Vercel
   }
