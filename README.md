@@ -2,7 +2,7 @@
 
 ## Intro
 
-Influenpeer is a video NFT creation platform powered by Zora and Livepeer built in the OP Mainnet, Base and Zora networks. It ensures to creators video NFTs up to 10GB and video playback optimised for all their followers and audiences on all bandwidths and device types.
+Influenpeer is a video NFT creation platform powered by Zora and Livepeer built in the OP Mainnet, Zora, and Base networks. It ensures to creators video NFTs up to 10GB and video playback optimised for all their followers and audiences on all bandwidths and device types.
 
 ## Overview
 
@@ -15,7 +15,7 @@ Influenpeer does not limit creators and viewers. It offers a video NFT minting w
 
 - Enabling the creation of video NFTs up to 10GB.
 
-- Available on OP Mainnet, Base and Zora (including their testnets).
+- Available on Zora, OP Mainnet, and Base (including their testnets).
 
 - Powered by Zora NFT ERC721 Edition (creating NFT contract using Zora ERC721 smart contracts).
 
@@ -32,6 +32,14 @@ Influenpeer does not limit creators and viewers. It offers a video NFT minting w
 - Limiting mints per address when purchasing.
 
 - Supply limited to 9999 tokens (initially).
+
+## Tech stack
+
+This project uses the video infrastructure protocol from [Livepeer](https://livepeer.org) to offer creators the freedom and autonomy to innovate and viewers/NFT buyers a choice in their experience.
+
+Influenpeer uses the [Zora](https://zora.co) NFT ERC721 Editions NFT creator on the OP Mainnet, Base, and Zora.
+
+It is built using [Vite](https://vitejs.dev/), [React](https://react.dev/), [RainbowKit](https://www.rainbowkit.com) and [Wagmi](https://wagmi.sh).
 
 ## Set up React + TypeScript + Vite
 
