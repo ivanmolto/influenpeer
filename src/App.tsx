@@ -23,7 +23,6 @@ import {
 } from "wagmi";
 
 import { BsCheck2Circle } from "react-icons/bs";
-import { BsTwitter } from "react-icons/bs";
 import { FilmIcon } from "@heroicons/react/24/solid";
 
 import soundtrap from "./assets/soundtrap.png";
@@ -69,10 +68,6 @@ export default function Home() {
   const [buttonClicked, setButtonClicked] = useState<boolean>(false);
 
   const { address } = useAccount();
-
-  if (isFileSelected && isUploadingToIPFS && isProcessing && buttonClicked) {
-    // Do nothing - workaround to upload to Vercel
-  }
 
   // Creating an asset
   const {
@@ -141,15 +136,6 @@ export default function Home() {
         ? `Video Processing: ${Math.round(progress?.[0].progress * 100)}%`
         : null,
     [progress],
-  );
-
-  console.log(
-    isFileSelected,
-    isUploadingToIPFS,
-    isProcessing,
-    buttonClicked,
-    error,
-    progressFormatted,
   );
 
   const uploading = useMemo(
@@ -273,6 +259,18 @@ export default function Home() {
       write();
     }
   }, [write, asset?.storage?.status?.phase, isWriteInProgress]);
+
+  if (
+    isFileSelected &&
+    isUploadingToIPFS &&
+    isProcessing &&
+    buttonClicked &&
+    progressFormatted &&
+    prepareError &&
+    isPrepareError
+  ) {
+    // Do nothing - workaround to upload to Vercel
+  }
 
   const twitterLink = `https://twitter.com/intent/tweet?text=Check%20out%20my%20Video%20NFT%20📽️%0D${assetName}%20minted%20on%20%23Influenpeer.%0D%0D🛠️%20Built%20on%20%40Superchain%0D%20🌐%20Powered%20by%20%40Zora%0D%0DCreate%20your%20%23Influenpeer%20here%20👇%20https://www.influenpeer.com`;
 
