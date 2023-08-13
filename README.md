@@ -35,7 +35,7 @@ Influenpeer does not limit creators and viewers. It offers a video NFT minting w
 
 ## Home
 
-![](https://ivanmolto.mypinata.cloud/ipfs/QmRMtPM8jQSZjKAvPjLPgJAXgQvRyk78Yeje5BUorUTTxE?_gl=1*lul05q*_ga*ODhhNzU4NWEtNGMwZS00ODExLWE2YmQtZGE4ZDZjYmU4N2I0*_ga_5RMPXG14TE*MTY3OTg0NjQ3Ny41Ni4xLjE2Nzk4NDY0ODAuNTcuMC4w)
+![](https://ivanmolto.mypinata.cloud/ipfs/QmUph6z6WcHhEwYW8nXFyu8PKguozt4h5WPBVEpf2F5Tu5?_gl=1*1g4sk9s*_ga*ODhhNzU4NWEtNGMwZS00ODExLWE2YmQtZGE4ZDZjYmU4N2I0*_ga_5RMPXG14TE*MTY5MTk0MDA5My42My4xLjE2OTE5NDI4NjAuNTcuMC4w)
 
 ## Operating landing
 
