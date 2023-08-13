@@ -33,6 +33,22 @@ Influenpeer does not limit creators and viewers. It offers a video NFT minting w
 
 - Supply limited to 9999 tokens (initially).
 
+## Home
+
+![](<![](https://ivanmolto.mypinata.cloud/ipfs/QmRMtPM8jQSZjKAvPjLPgJAXgQvRyk78Yeje5BUorUTTxE?_gl=1*lul05q*_ga*ODhhNzU4NWEtNGMwZS00ODExLWE2YmQtZGE4ZDZjYmU4N2I0*_ga_5RMPXG14TE*MTY3OTg0NjQ3Ny41Ni4xLjE2Nzk4NDY0ODAuNTcuMC4w)>)
+
+## Operating landing
+
+![](https://ivanmolto.mypinata.cloud/ipfs/QmbB7nL42RJrf7cXCsYhaSKxQGHSpcyzXgTfmskCEEo12K?_gl=1*1go8amo*_ga*ODhhNzU4NWEtNGMwZS00ODExLWE2YmQtZGE4ZDZjYmU4N2I0*_ga_5RMPXG14TE*MTY5MTk0MDA5My42My4xLjE2OTE5NDA1NDAuNjAuMC4w)
+
+## Zora manage
+
+![](https://ivanmolto.mypinata.cloud/ipfs/QmTHpEn5s6WhvRGzLic71TLZF59bYATRG9AaxagcizxT79?_gl=1*1prc9d5*_ga*ODhhNzU4NWEtNGMwZS00ODExLWE2YmQtZGE4ZDZjYmU4N2I0*_ga_5RMPXG14TE*MTY5MTk0MDA5My42My4xLjE2OTE5NDA3MjQuNjAuMC4w)
+
+## Mint page
+
+![](https://ivanmolto.mypinata.cloud/ipfs/QmbJKcNQ5nYSaL63UY9WiEU9bTpRDFPD7UTt7HSngp2yE1?_gl=1*nrxofw*_ga*ODhhNzU4NWEtNGMwZS00ODExLWE2YmQtZGE4ZDZjYmU4N2I0*_ga_5RMPXG14TE*MTY5MTk0MDA5My42My4xLjE2OTE5NDA3NjguMTYuMC4w)
+
 ## Tech stack
 
 This project uses the video infrastructure protocol from [Livepeer](https://livepeer.org) to offer creators the freedom and autonomy to innovate and viewers/NFT buyers a choice in their experience.
