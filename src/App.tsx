@@ -273,7 +273,7 @@ export default function Home() {
     // Do nothing - workaround to upload to Vercel
   }
 
-  const twitterLink = `https://twitter.com/intent/tweet?text=Check%20out%20my%20Video%20NFT%20📽️%0D${assetName}%20minted%20on%20%23Influenpeer.%0D%0D🛠️%20Built%20on%20%40Superchain%0D%20🌐%20Powered%20by%20%40Zora%0D%0DCreate%20your%20%23Influenpeer%20here%20👇%20https://www.influenpeer.com`;
+  const twitterLink = `https://twitter.com/intent/tweet?text=Check%20out%20my%20Video%20NFT%20📽️%0D${assetName}%20minted%20on%20%23Influenpeer.%0D%0D🌐%20Powered%20by%20%40Zora%0D%0DCreate%20your%20%23Influenpeer%20here%20👇%20https://www.influenpeer.com`;
 
   return (
     <div className="bg-white font-montserrat">
@@ -361,8 +361,15 @@ export default function Home() {
                     </h1>
                   )}
                   <p className="relative mt-6 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">
-                    Create a video NFT and engage with your audience. <br />
-                    Minting as a new way of communication with your followers.
+                    A video NFT platform offering creators the freedom
+                    <br />
+                    and autonomy to create rich video NFT experiences.
+                    <br />
+                    <br />
+                    No more limits with files up to 10GB and optimal video
+                    playback on all bandwidths and device types.
+                    <br />
+                    Leveraging Zora Protocol Rewards.
                   </p>
                   {address ? (
                     <div className="sm:max-w-md lg:max-w-lg">
@@ -466,7 +473,7 @@ export default function Home() {
                             {/* Card with NFT Information */}
                             <div className="border border-solid border-indigo-600 rounded-md p-6 mb-4 mt-5 lg:w-3/4 w-96">
                               <div className="grid grid-row-2">
-                                <h1 className="text-5xl place-self-start">
+                                <h1 className="text-4xl place-self-start">
                                   {assetName}
                                 </h1>
                                 <a
