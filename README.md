@@ -4,6 +4,8 @@
 
 Influenpeer is a video NFT creation platform powered by Zora and Livepeer built in the OP Mainnet, Zora, and Base networks. It ensures to creators video NFTs up to 10GB and video playback optimised for all their followers and audiences on all bandwidths and device types.
 
+Optimism - Super Pool Prize at ETH Global SUPERHACK 🏊‍♂️🏆
+
 ## Overview
 
 It is very costly and complex for NFT marketplaces to provide good video experiences for large files.
